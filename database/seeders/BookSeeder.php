@@ -16,7 +16,7 @@ class BookSeeder extends Seeder
         Book::truncate();
 
         Book::factory()
-            ->count(5)
+            ->count(15)
             ->create();
     }
 }
