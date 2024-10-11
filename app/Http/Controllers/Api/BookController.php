@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Book\DestroyRequest;
 use App\Http\Requests\Book\IndexRequest;
@@ -11,6 +11,7 @@ use App\Http\Services\Book\Index;
 use App\Http\Services\Book\Store;
 use App\Http\Services\Book\Update;
 use App\Models\Book;
+use App\Http\Controllers\Controller;
 
 class BookController extends Controller
 {
