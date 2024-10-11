@@ -44,7 +44,7 @@
                                 <a :href="'/books/' + row.id + '/edit'">Edit</a>
                             </div>
                             <div>
-                                <a :href="'/books/' + row.id + '/delete'">Delete</a>
+                                <a  @click.prevent="deleteBook(row)" :href="'/books/' + row.id + '/delete'">Delete</a>
                             </div>
                         </td>
                     </tr>
@@ -80,13 +80,24 @@
                     search: searchString,
                 }
 
-                axios('/api/books', {params: params})
+                axios.get('/api/books', {params: params})
                     .then((response) => {
                         this.tableData = response.data.data.data;
                     })
                     .finally(() => {
                         this.loading = false;
                     });
+            },
+
+            deleteBook(book) {
+                if (confirm('Delete Book "' + book.title + '" ?'))
+                axios.post('/api/books/' + book.id, {
+                    _method: 'delete'
+                })
+                .then(() =>{
+                    alert('Book "' + book.title + '" Deleted');
+                    this.loadTableData();
+                })
             },
         },
 
