@@ -6,8 +6,15 @@ use App\Models\Book;
 
 class Index
 {
-    public function __invoke($page = null)
+    public function __invoke(string $search = null, int $page = null)
     {
-        return Book::paginate(5, ['*'], 'page', $page);
+        $books = Book::query();
+
+        // @todo: implement advance search?
+        if ($search) {
+            $books->where('title', 'like', '%' . $search . '%');
+        }
+
+        return $books->paginate(5, ['*'], 'page', $page);
     }
 }

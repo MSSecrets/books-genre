@@ -21,7 +21,7 @@ module.exports = {
       addBase({
         // table color 
         'td': { padding: '10px', 'border-color': '#ffffff'},
-        'th': { padding: '10px', background: config('theme.colors.slate.800'), color: '#ffffff'},
+        'th': { padding: '10px', background: config('theme.colors.slate.800'), 'border-color': '#ffffff', color: '#ffffff', 'text-align': 'left'},
         'tr': { border: '1px', 'border-bottom': '1px solid #ffffff'},
         'tbody': {background: config('theme.colors.gray.200')}
       })
