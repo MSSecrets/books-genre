@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <title>Full Stack Tech Test</title>
-        <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
-    </head>
-    <body>
-        <div id="app">
-            <edit-book></edit-book>
-        </div>
+@extends('layouts.tech-app')
 
-        <script src="{{ mix('js/app.js') }}"></script>
-    </body>
-</html>
+@section('title', config('app.name'))
+
+@section('content')
+
+@endsection
