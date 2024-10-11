@@ -1,30 +1,44 @@
 <template>
     <div>
-        <div class="bg-gray-800 pt-8 pb-20">
-            <div class="w-9/12 text-center mr-auto ml-auto -mt-0 mb-0">
-            <h1 class="text-orange text-5xl p-10">Book Shop</h1>
-            <p class="w-9/12 mr-auto ml-auto -mt-0 mb-0 text-white">Cupcake ipsum dolor sit amet croissant. I love topping candy canes sweet roll croissant caramels. Soufflé macaroon liquorice chocolate tart I love.</p>
+
+        <div v-if="message.show" class="w-full bg-green-600 ease-in-out duration-300 text-white text-left p-5 rounded my-auto">
+            {{ message.message }}
         </div>
-    </div>
         <div class="w-1/5 text-left mr-auto ml-auto -mt-0 mb-0">
-            <form @submit.prevent="submit">
-                <div class="pt-10">
+            <form>
+                <div>
                     <h2 class="text-center text-3xl pb-10">Edit Book</h2>
+                 
                     <div class="pb-10">
                         <label class="w-20 inline-block">Title: </label>
-                        <input type="text" placeholder="Title" class="rounded-md border-gray-400 border-solid border-[1px] p-2 w-96">
+                        <input 
+                            v-model="book.title" 
+                            type="text" 
+                            placeholder="Title" 
+                            class="rounded-md border-gray-400 border-solid border-[1px] p-2 w-96"
+                        />
                     </div>
                     <div class="pb-10">
                         <label class="w-20 inline-block">Author: </label>
-                        <input type="text" placeholder="Author" class="rounded-md border-gray-400 border-solid border-[1px] p-2 w-96">
+                        <input 
+                            v-model="book.author"
+                            type="text" 
+                            placeholder="Author"
+                            class="rounded-md border-gray-400 border-solid border-[1px] p-2 w-96"
+                        />
                     </div>
                     <div class="pb-10">
                         <label class="w-20 inline-block">Rating: </label>
-                        <input type="text" placeholder="5" class="rounded-md border-gray-400 border-solid border-[1px] p-2 w-96">
+                        <input 
+                            v-model="book.rating"
+                            type="text" 
+                            placeholder="5" 
+                            class="rounded-md border-gray-400 border-solid border-[1px] p-2 w-96"
+                        />
                     </div>
                 </div>
                 <div class="text-center">
-                    <button class="text-white bg-orange py-2 px-4 rounded" type="reset">Submit</button>
+                    <button  @click.prevent="updateBook()" class="text-white bg-orange py-2 px-4 rounded" type="reset">Submit</button>
                 </div>
             </form>
         </div>
@@ -32,7 +46,58 @@
 </template>
 
 <script>
+import axios from 'axios';
     export default {
         name: 'EditBook',
+        props: {
+            book: {
+                required: true,
+                type: Object,
+            }
+        },
+
+        data() {
+            return {
+                errors: {},
+                message: {
+                    show: false,
+                    type: 'success',
+                    message: '',
+                }
+            }
+        },
+
+        methods: {
+            updateBook() {
+                axios.post('/api/books/' + this.book.id, {
+                    _method: 'PATCH',
+                    title: this.book.title,
+                    author: this.book.author,
+                    rating: this.book.rating,
+                })
+                .then(() => {
+                    this.message.show = true;
+                    this.message.type = 'success';
+                    this.message.message = 'Book " ' + this.book.title + ' " updated.';
+                    
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.message.show = true;
+                    this.message.type = 'error';
+                    this.message.message = 'Failed to update book';
+                })
+                .finally(() => {
+                        // remove success message after 4 secs
+                        setTimeout(() => {
+                        this.message.show = false;
+                        this.message.message = '';
+                    }, 4000);
+
+                }) 
+
+            }
+        }
+
     }
 </script>

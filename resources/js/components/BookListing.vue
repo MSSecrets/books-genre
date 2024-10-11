@@ -8,14 +8,12 @@
                 class="p-3 border border-gray-200"
             />
         </div>
-
-
         <div v-if="loading" class="ease-in-out duration-300 text-center p-14 text-2xl">
             Loading...
         </div>
 
         <div v-else>
-            <div v-if="! tableData || tableData.length == 0" class="ease-in-out duration-300 text-center p-14 text-2xl">
+            <div v-if="! books || books.length == 0" class="ease-in-out duration-300 text-center p-14 text-2xl">
                 No Result
             </div>
             
@@ -29,7 +27,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="row in tableData">
+                    <tr v-for="books in books">
                         <td>
                             {{ row.title }}
                         </td>
@@ -62,18 +60,18 @@
 
         data() {
             return {
-                tableData: null,
+                books: null,
                 loading: false,
                 searchString: null,
             }
         },
 
         mounted() {
-            this.loadTableData();
+            this.loadBooks();
         },
 
         methods: {
-            loadTableData(searchString) {
+            loadBooks(searchString) {
                 this.loading = true;
 
                 let params = {
@@ -82,7 +80,7 @@
 
                 axios.get('/api/books', {params: params})
                     .then((response) => {
-                        this.tableData = response.data.data.data;
+                        this.books = response.data.data.data;
                     })
                     .finally(() => {
                         this.loading = false;
@@ -96,7 +94,7 @@
                 })
                 .then(() =>{
                     alert('Book "' + book.title + '" Deleted');
-                    this.loadTableData();
+                    this.loadBooks();
                 })
             },
         },
@@ -104,7 +102,7 @@
         watch: {
             searchString(searchString) {
                 if (searchString && searchString.length > 2) {
-                    this.loadTableData(searchString);
+                    this.loadBooks(searchString);
                 }
             }
         }
