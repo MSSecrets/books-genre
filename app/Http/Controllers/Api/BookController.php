@@ -12,6 +12,9 @@ use App\Http\Services\Book\Store;
 use App\Http\Services\Book\Update;
 use App\Models\Book;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Book\AssignGenresRequest;
+use App\Http\Services\Book\AssignGenres;
+use Throwable;
 
 class BookController extends Controller
 {
@@ -50,5 +53,18 @@ class BookController extends Controller
         return response()->json([
             'message' => 'Successfully deleted the book.',
         ]);
+    }
+
+    public function assignGenres(AssignGenresRequest $request, AssignGenres $assignGenres, Book $book)
+    {
+        $book = $assignGenres($request->validated(), $book);
+
+        $book->load('genres');
+
+        return response()->json([
+            'message' => 'Successfully assinged book genre.',
+            'data' => $book
+        ]);
+    
     }
 }

@@ -4,25 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Genre;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Book;
 
-class Book extends Model
+class Genre extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'title', 
-        'author',
-        'rating',
+        'name', 
     ];
 
     protected $guarded = [];
 
-    public function genres(): BelongsToMany
+    public function books(): BelongsToMany
     {
-        return $this->belongsToMany(Genre::class)
+        return $this->belongsToMany(Book::class)
             ->withTimestamps();
     }
+
 }
